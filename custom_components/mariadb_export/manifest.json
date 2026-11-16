@@ -4,10 +4,10 @@
   "after_dependencies": ["recorder"],
   "codeowners": ["@Daniel-Shoji"],
   "config_flow": true,
-  "documentation": "https://github.com/Daniel-Shoji/ha-mariadb-export",
+  "documentation": "https://github.com/Daniel-Shoji/MariaDB-Export",
   "integration_type": "service",
   "iot_class": "local_polling",
-  "issue_tracker": "https://github.com/Daniel-Shoji/ha-mariadb-export/issues",
+  "issue_tracker": "https://github.com/Daniel-Shoji/MariaDB-Export/issues",
   "requirements": ["PyMySQL>=1.1.1"],
   "version": "1.0.0"
 }
