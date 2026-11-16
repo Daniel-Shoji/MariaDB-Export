@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>MariaDB Export</title>
+    <style>
+      :root {
+        color-scheme: light;
+        --ink: #12211f;
+        --muted: #3d5652;
+        --line: #d5e4e0;
+        --paper: #f4faf8;
+        --card: #ffffff;
+        --teal: #0f766e;
+        --mint: #ccfbf1;
+      }
+      * { box-sizing: border-box; }
+      body {
+        margin: 0;
+        font-family: "Segoe UI", system-ui, sans-serif;
+        color: var(--ink);
+        background: var(--paper);
+        line-height: 1.5;
+      }
+      main { max-width: 42rem; margin: 0 auto; padding: 2.5rem 1.25rem 4rem; }
+      header {
+        display: flex;
+        gap: 1rem;
+        align-items: center;
+        margin-bottom: 1.5rem;
+      }
+      .mark {
+        width: 3.5rem;
+        height: 3.5rem;
+        border-radius: 0.9rem;
+        background: #0f3d38;
+        display: grid;
+        place-items: center;
+        flex: none;
+      }
+      .mark span {
+        width: 1.35rem;
+        height: 1.15rem;
+        border: 3px solid #99f6e4;
+        border-radius: 0.7rem / 0.45rem;
+        box-shadow: 0 7px 0 -3px #2dd4bf, 0 14px 0 -6px #14b8a6;
+      }
+      h1 { font-size: 1.85rem; line-height: 1.15; margin: 0; }
+      .lede { color: var(--muted); margin: 0.35rem 0 0; }
+      section {
+        background: var(--card);
+        border: 1px solid var(--line);
+        border-radius: 1rem;
+        padding: 1.1rem 1.15rem;
+        margin-top: 1rem;
+      }
+      h2 { font-size: 1rem; margin: 0 0 0.45rem; }
+      p, li { margin: 0.35rem 0; }
+      ul { padding-left: 1.15rem; }
+      code, pre {
+        font-family: ui-monospace, "Cascadia Code", monospace;
+        font-size: 0.86rem;
+      }
+      code { background: var(--mint); padding: 0.05rem 0.3rem; border-radius: 0.3rem; }
+      pre {
+        overflow-x: auto;
+        background: #10211f;
+        color: #e7fffb;
+        padding: 0.9rem 1rem;
+        border-radius: 0.75rem;
+      }
+      .note { color: var(--muted); font-size: 0.92rem; }
+    </style>
+  </head>
+  <body>
+    <main>
+      <header>
+        <div class="mark" aria-hidden="true"><span></span></div>
+        <div>
+          <h1>MariaDB Export</h1>
+          <p class="lede">Export Home Assistant recorder history from MariaDB or MySQL.</p>
+        </div>
+      </header>
+      <section>
+        <h2>What it writes</h2>
+        <p>
+          States, events, hourly statistics, 5-minute statistics, and recorder runs,
+          as CSV, JSON, or JSON Lines. A custom export runs one read-only SELECT.
+          Files land in <code>config/mariadb_export/</code>.
+        </p>
+      </section>
+      <section>
+        <h2>Use it in Home Assistant</h2>
+        <p>Add the integration, then call the export action.</p>
+        <pre>action: mariadb_export.export
+data:
+  dataset: statistics
+  start: "{{ (now() - timedelta(days=31)).isoformat() }}"
+  format: csv</pre>
+        <p class="note">
+          Give the database user SELECT only. The action does not change recorder tables.
+        </p>
+      </section>
+      <section>
+        <h2>Install</h2>
+        <ul>
+          <li>Publish this repository on GitHub.</li>
+          <li>Add it in HACS as an integration, or copy <code>custom_components/mariadb_export</code>.</li>
+          <li>Restart Home Assistant and add MariaDB Export.</li>
+        </ul>
+      </section>
+    </main>
+  </body>
+</html>
