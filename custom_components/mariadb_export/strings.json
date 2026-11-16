@@ -1,0 +1,106 @@
+{
+  "config": {
+    "step": {
+      "user": {
+        "title": "MariaDB Export",
+        "description": "Export Home Assistant history from a MariaDB or MySQL recorder database.",
+        "menu_options": {
+          "recorder": "Use the recorder database",
+          "manual": "Enter connection details"
+        }
+      },
+      "reconfigure": {
+        "title": "Update connection",
+        "menu_options": {
+          "recorder": "Use the recorder database",
+          "manual": "Enter connection details"
+        }
+      },
+      "recorder": {
+        "title": "Recorder database",
+        "description": "The recorder is using `{database}` on `{host}` as `{username}`.\n\nThe password stays in the recorder configuration and is read again for each export. That account can write. A separate read-only user is safer."
+      },
+      "manual": {
+        "title": "Connection",
+        "description": "Use a read-only MariaDB account. Exports run SELECT statements only.",
+        "data": {
+          "host": "Host",
+          "port": "Port",
+          "database": "Database",
+          "username": "Username",
+          "password": "Password",
+          "unix_socket": "Unix socket",
+          "ssl": "Use SSL"
+        },
+        "data_description": {
+          "host": "Leave this blank when you connect with a Unix socket.",
+          "unix_socket": "Optional path, such as /run/mysqld/mysqld.sock",
+          "ssl": "Turn this on when the server requires TLS."
+        }
+      },
+      "reauth_manual": {
+        "title": "Update password",
+        "description": "MariaDB rejected the account. Enter the current password.",
+        "data": {
+          "password": "Password"
+        }
+      },
+      "reauth_recorder": {
+        "title": "Recorder password",
+        "description": "Update the recorder database password in Home Assistant, then submit to try the connection again."
+      }
+    },
+    "error": {
+      "cannot_connect": "Could not connect to MariaDB. Check the host, port, and that the server accepts this connection.",
+      "invalid_auth": "MariaDB rejected the username or password.",
+      "unknown_database": "That database does not exist or this user cannot see it.",
+      "missing_host": "Enter a host or a Unix socket.",
+      "missing_database": "Enter the database name.",
+      "missing_username": "Enter the username.",
+      "invalid_port": "Enter a port from 1 to 65535.",
+      "invalid_export_dir": "The export folder must stay inside the Home Assistant config directory.",
+      "invalid_limit": "Enter a row limit from 1 to 2000000.",
+      "invalid_timeout": "Enter a timeout from 0 to 86400 seconds.",
+      "invalid_url": "The recorder database URL could not be read."
+    },
+    "abort": {
+      "already_configured": "This MariaDB database is already configured.",
+      "not_mariadb": "The recorder database uses {scheme}, which is not MariaDB or MySQL. Add the integration again and enter a MariaDB connection.",
+      "recorder_missing": "The recorder is not running, so there is no database URL to use.",
+      "invalid_url": "The recorder database URL could not be read.",
+      "reauth_successful": "Authentication updated.",
+      "reconfigure_successful": "Connection updated."
+    }
+  },
+  "options": {
+    "step": {
+      "init": {
+        "title": "Export options",
+        "data": {
+          "export_dir": "Export folder",
+          "default_format": "Default format",
+          "default_limit": "Row limit",
+          "statement_timeout": "Statement timeout"
+        },
+        "data_description": {
+          "export_dir": "Folder inside the config directory. Export files are written here.",
+          "default_limit": "Maximum rows in one export when the action does not set a limit.",
+          "statement_timeout": "Seconds before MariaDB stops a query. Use 0 to leave the query uncapped."
+        }
+      }
+    }
+  },
+  "entity": {
+    "sensor": {
+      "last_export": {
+        "name": "Last export",
+        "state": {
+          "idle": "Idle",
+          "running": "Running",
+          "success": "Success",
+          "error": "Error"
+        }
+      }
+    }
+  }
+}

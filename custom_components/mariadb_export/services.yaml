@@ -1,0 +1,128 @@
+export:
+  name: Export data
+  description: >
+    Write recorder history, or one read-only SELECT, from MariaDB to a file
+    in the config directory. Times are UTC. A call with no start or end uses
+    a recent window: 1 day for states and events, 31 days for hourly
+    statistics, 2 days for 5-minute statistics, and 365 days for recorder runs.
+  fields:
+    config_entry:
+      name: Database
+      description: Which configured database to read. Required when more than one entry exists.
+      selector:
+        config_entry:
+          integration: mariadb_export
+    dataset:
+      name: Dataset
+      description: >
+        states, events, statistics (hourly), statistics_short_term (5 minutes),
+        recorder_runs, or custom. state_changed events live in states, not events.
+      required: true
+      example: states
+      selector:
+        select:
+          options:
+            - states
+            - events
+            - statistics
+            - statistics_short_term
+            - recorder_runs
+            - custom
+    start:
+      name: Start
+      description: Include rows at or after this time. Omit it with end to use the default window.
+      selector:
+        datetime:
+    end:
+      name: End
+      description: Exclude rows at or after this time. Omit it to export through now.
+      selector:
+        datetime:
+    entity_id:
+      name: Entities
+      description: >
+        States to include. For statistics, this is used as the statistic id
+        when Statistic id is empty, because those ids match the entity id.
+      selector:
+        entity:
+          multiple: true
+    event_type:
+      name: Event types
+      description: Event types to include, such as automation_triggered. A comma-separated list also works.
+      example: automation_triggered
+      selector:
+        text:
+    statistic_id:
+      name: Statistic ids
+      description: Statistic ids to include, usually the same as the entity id.
+      example: sensor.living_room_temperature
+      selector:
+        text:
+    changed_only:
+      name: State changes only
+      description: For states, leave out rows that only updated attributes.
+      default: false
+      selector:
+        boolean:
+    include_attributes:
+      name: Include attributes
+      description: Include state attribute JSON and event data JSON.
+      default: true
+      selector:
+        boolean:
+    include_context:
+      name: Include context
+      description: Include context, user, and parent ids as hexadecimal strings.
+      default: false
+      selector:
+        boolean:
+    format:
+      name: Format
+      description: csv, json, or jsonl. The options default is used when this is omitted.
+      example: csv
+      selector:
+        select:
+          options:
+            - csv
+            - json
+            - jsonl
+    query:
+      name: SQL query
+      description: >
+        A single SELECT, used when the dataset is custom. Writes, multiple
+        statements, and file exports are rejected. Use a read-only database user.
+      example: SELECT statistic_id, unit_of_measurement FROM statistics_meta ORDER BY statistic_id
+      selector:
+        text:
+          multiline: true
+    limit:
+      name: Row limit
+      description: Maximum rows in this file. The response sets truncated when more rows matched.
+      example: 250000
+      selector:
+        number:
+          min: 1
+          max: 2000000
+          step: 1
+          mode: box
+    filename:
+      name: File name
+      description: Optional file name. The format extension is added. Directories are ignored.
+      example: kitchen-temperature.csv
+      selector:
+        text:
+    after_time:
+      name: Resume after time
+      description: >
+        Together with Resume after id, continue an export that was truncated.
+        Pass last_time and last_id from the previous response, and the same start and end.
+      selector:
+        datetime:
+    after_id:
+      name: Resume after id
+      description: The last_id from the previous response.
+      selector:
+        number:
+          min: 0
+          step: 1
+          mode: box

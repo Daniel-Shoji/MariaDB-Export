@@ -1,0 +1,32 @@
+name: Bug report
+description: Something in MariaDB Export failed or wrote the wrong file.
+title: "[Bug] "
+labels: ["bug"]
+body:
+  - type: textarea
+    attributes:
+      label: What happened
+      description: What you exported, the dataset, and the error or the wrong result.
+    validations:
+      required: true
+  - type: input
+    attributes:
+      label: Home Assistant version
+      placeholder: 2026.11.0
+    validations:
+      required: true
+  - type: input
+    attributes:
+      label: MariaDB Export version
+      placeholder: 1.0.0
+    validations:
+      required: true
+  - type: dropdown
+    attributes:
+      label: Database
+      options:
+        - MariaDB
+        - MySQL
+        - Unsure
+    validations:
+      required: true

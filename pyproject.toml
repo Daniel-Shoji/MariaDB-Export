@@ -1,0 +1,24 @@
+[project]
+name = "mariadb-export"
+version = "1.0.0"
+description = "Home Assistant custom integration that exports MariaDB recorder data."
+requires-python = ">=3.12"
+dependencies = ["PyMySQL>=1.1.1"]
+
+[project.optional-dependencies]
+dev = ["pytest>=8.2", "PyYAML>=6.0", "ruff>=0.6"]
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+pythonpath = ["custom_components/mariadb_export", "tests"]
+
+[tool.ruff]
+line-length = 88
+target-version = "py312"
+src = ["custom_components/mariadb_export", "tests"]
+
+[tool.ruff.lint]
+select = ["E", "F", "I", "UP", "B", "W"]
+
+[tool.ruff.lint.per-file-ignores]
+"tests/*" = ["E501"]

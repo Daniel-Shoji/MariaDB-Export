@@ -1,0 +1,19 @@
+{
+  "entity": {
+    "sensor": {
+      "last_export": {
+        "default": "mdi:database-export",
+        "state": {
+          "running": "mdi:database-sync",
+          "success": "mdi:database-check",
+          "error": "mdi:database-alert"
+        }
+      }
+    }
+  },
+  "services": {
+    "export": {
+      "service": "mdi:database-export"
+    }
+  }
+}
