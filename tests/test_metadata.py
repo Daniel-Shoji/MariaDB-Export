@@ -17,6 +17,9 @@ def test_hacs_repository_layout() -> None:
     hacs = json.loads((ROOT / "hacs.json").read_text(encoding="utf-8"))
     manifest = json.loads((COMPONENT / "manifest.json").read_text(encoding="utf-8"))
     strings = json.loads((COMPONENT / "strings.json").read_text(encoding="utf-8"))
+    english = json.loads(
+        (COMPONENT / "translations" / "en.json").read_text(encoding="utf-8")
+    )
     services = yaml.safe_load((COMPONENT / "services.yaml").read_text(encoding="utf-8"))
 
     assert hacs["name"] == "MariaDB Export"
@@ -31,6 +34,16 @@ def test_hacs_repository_layout() -> None:
     assert (COMPONENT / "config_flow.py").is_file()
     assert services["export"]["fields"]["dataset"]["required"] is True
     assert strings["entity"]["sensor"]["last_export"]["state"]["success"] == "Success"
+    manual = english["config"]["step"]["manual"]
+    assert manual["data"]["host"] == "Host"
+    assert "core-mariadb" in manual["data_description"]["host"]
+    assert "3306" in manual["data_description"]["port"]
+    assert "homeassistant" in manual["data_description"]["database"]
+    assert english["config"]["error"]["not_mariadb"]
+    assert (
+        english["config"]["step"]["user"]["menu_options"]["manual"]
+        == "Enter a MariaDB connection"
+    )
     names = {
         path.name
         for path in (ROOT / "custom_components").iterdir()

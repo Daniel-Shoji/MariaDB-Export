@@ -1,0 +1,112 @@
+{
+  "config": {
+    "step": {
+      "user": {
+        "title": "MariaDB Export",
+        "description": "Choose where the recorder history lives. Use the second choice when Home Assistant is still on the built-in SQLite database.",
+        "menu_options": {
+          "recorder": "Use the recorder database",
+          "manual": "Enter a MariaDB connection"
+        }
+      },
+      "reconfigure": {
+        "title": "Update connection",
+        "menu_options": {
+          "recorder": "Use the recorder database",
+          "manual": "Enter a MariaDB connection"
+        }
+      },
+      "recorder": {
+        "title": "Recorder database",
+        "description": "The recorder is using `{database}` on `{host}` as `{username}`.\n\nThe password stays in the recorder configuration and is read again for each export. That account can write. A separate read-only user is safer. Submit to test this connection."
+      },
+      "manual": {
+        "title": "MariaDB connection",
+        "description": "Type the MariaDB or MySQL server that stores the history you want to export. If the recorder uses {scheme}, that is not this form: enter the MariaDB server instead.",
+        "data": {
+          "host": "Host",
+          "port": "Port",
+          "database": "Database",
+          "username": "Username",
+          "password": "Password",
+          "unix_socket": "Unix socket",
+          "ssl": "Use SSL"
+        },
+        "data_description": {
+          "host": "Hostname or IP. Official MariaDB add-on: core-mariadb. Database on another computer: for example 192.168.1.20. Leave blank only when you fill in Unix socket.",
+          "port": "Leave 3306 unless you changed the MariaDB port.",
+          "database": "Database name. The Home Assistant recorder default is homeassistant.",
+          "username": "MariaDB user that can read that database. Example: ha_export.",
+          "password": "Password for that user. Leave empty only when the account has no password.",
+          "unix_socket": "Leave empty for a normal host and port. Fill this only when Home Assistant is on the same machine as MariaDB, for example /run/mysqld/mysqld.sock.",
+          "ssl": "Turn on only when that server requires an encrypted connection. A local add-on usually stays off."
+        }
+      },
+      "reauth_manual": {
+        "title": "Update password",
+        "description": "MariaDB rejected the account. Enter the current password.",
+        "data": {
+          "password": "Password"
+        }
+      },
+      "reauth_recorder": {
+        "title": "Recorder password",
+        "description": "Update the recorder database password in Home Assistant, then submit to try the connection again."
+      }
+    },
+    "error": {
+      "cannot_connect": "Could not connect to MariaDB. Check the host, port, and that the server accepts this connection.",
+      "invalid_auth": "MariaDB rejected the username or password.",
+      "unknown_database": "That database does not exist or this user cannot see it.",
+      "missing_host": "Enter a host or a Unix socket.",
+      "missing_database": "Enter the database name. The usual name is homeassistant.",
+      "missing_username": "Enter the username, for example ha_export.",
+      "invalid_port": "Enter a port from 1 to 65535. The usual port is 3306.",
+      "invalid_export_dir": "The export folder must stay inside the Home Assistant config directory.",
+      "invalid_limit": "Enter a row limit from 1 to 2000000.",
+      "invalid_timeout": "Enter a timeout from 0 to 86400 seconds.",
+      "invalid_url": "The recorder database URL could not be read.",
+      "not_mariadb": "The recorder is not using MariaDB or MySQL. A new Home Assistant uses SQLite. Enter the MariaDB host, database, and user in the fields below."
+    },
+    "abort": {
+      "already_configured": "This MariaDB database is already configured.",
+      "not_mariadb": "The recorder database uses {scheme}, which is not MariaDB or MySQL. Close this dialog and choose Enter a MariaDB connection.",
+      "recorder_missing": "The recorder is not running, so there is no database URL to use. Close this dialog and choose Enter a MariaDB connection.",
+      "invalid_url": "The recorder database URL could not be read. Close this dialog and choose Enter a MariaDB connection.",
+      "reauth_successful": "Authentication updated.",
+      "reconfigure_successful": "Connection updated."
+    }
+  },
+  "options": {
+    "step": {
+      "init": {
+        "title": "Export options",
+        "data": {
+          "export_dir": "Export folder",
+          "default_format": "Default format",
+          "default_limit": "Row limit",
+          "statement_timeout": "Statement timeout"
+        },
+        "data_description": {
+          "export_dir": "Folder inside the config directory. Type mariadb_export to keep the default. Files appear in that folder.",
+          "default_format": "csv, json, or jsonl. Used when an export action does not set a format.",
+          "default_limit": "Maximum rows in one export when the action does not set a limit. Example: 250000.",
+          "statement_timeout": "Seconds before MariaDB stops a query. Type 0 to leave the query uncapped. Example: 900."
+        }
+      }
+    }
+  },
+  "entity": {
+    "sensor": {
+      "last_export": {
+        "name": "Last export",
+        "state": {
+          "idle": "Idle",
+          "running": "Running",
+          "success": "Success",
+          "error": "Error"
+        }
+      }
+    }
+  }
+}

@@ -110,10 +110,10 @@ class MariaDBExportConfigFlow(ConfigFlow, domain=DOMAIN):
         try:
             config = parse_db_url(url)
         except NotMariaDBError as err:
-            return self.async_abort(
-                reason="not_mariadb",
-                description_placeholders={"scheme": err.scheme},
-            )
+            # Default Home Assistant uses SQLite. Keep the user in the form
+            # instead of closing the dialog on an untranslated abort key.
+            self._recorder_scheme = err.scheme
+            return await self.async_step_manual()
         except ExportError:
             return self.async_abort(reason="invalid_url")
         placeholders = _recorder_placeholders(config)
@@ -139,6 +139,9 @@ class MariaDBExportConfigFlow(ConfigFlow, domain=DOMAIN):
         """Enter a host, database, and account."""
 
         errors: dict[str, str] = {}
+        scheme = getattr(self, "_recorder_scheme", None)
+        if user_input is None and scheme:
+            errors["base"] = "not_mariadb"
         if user_input is not None:
             try:
                 config = connection_from_fields(
@@ -170,6 +173,7 @@ class MariaDBExportConfigFlow(ConfigFlow, domain=DOMAIN):
                 _manual_schema(), suggested
             ),
             errors=errors,
+            description_placeholders={"scheme": scheme or "the current recorder"},
         )
 
     async def async_step_reauth(

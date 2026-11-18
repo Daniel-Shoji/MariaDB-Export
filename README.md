@@ -15,7 +15,7 @@ Home Assistant 2025.1 or newer is required. The integration targets the current 
 5. Restart Home Assistant.
 6. Go to **Settings → Devices & services → Add integration** and choose **MariaDB Export**.
 
-Documentation and the issue tracker point at [Daniel-Shoji/MariaDB-Export](https://github.com/Daniel-Shoji/MariaDB-Export).
+Documentation and the issue tracker point at [Daniel-Shoji/MariaDB-Export](https://github.com/Daniel-Shoji/MariaDB-Export). The click-by-click path from the HACS link to the first export file is in [SETUP.md](SETUP.md).
 
 ## Install by hand
 
